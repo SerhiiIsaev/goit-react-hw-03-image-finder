@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Searchbar } from "./Searchbar/Searchbar";
 import axios from "axios";
+import styles from './App.module.css'
 
 
 export class App extends Component {
@@ -40,7 +41,7 @@ export class App extends Component {
   
   render(){
     return (
-      <div>
+      <div className={styles.App}>
         <Searchbar onFormSubmit={this.onFormSubmit} />
         <ImageGallery cards={this.state.cards} />
       </div>
