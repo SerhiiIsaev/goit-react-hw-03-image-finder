@@ -3,6 +3,7 @@ import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Searchbar } from "./Searchbar/Searchbar";
 import axios from "axios";
 import styles from './App.module.css'
+import { Loader } from './Loader/Loader';
 
 
 export class App extends Component {
@@ -44,6 +45,7 @@ export class App extends Component {
       <div className={styles.App}>
         <Searchbar onFormSubmit={this.onFormSubmit} />
         <ImageGallery cards={this.state.cards} />
+        <Loader/>
       </div>
     );
   }
