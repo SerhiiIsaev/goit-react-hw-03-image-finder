@@ -3,7 +3,7 @@ import styles from './ImageGalleryItem.module.css'
 function ImageGalleryItem({ webformatURL, largeImageURL, onOpen }) {
   return (
     <li className={styles.GalleryItem}>
-      <img className={styles.GalleryItemImage} src={webformatURL} alt="picture" onClick={()=>onOpen(largeImageURL)} />
+      <img className={styles.GalleryItemImage} src={webformatURL} alt="" onClick={()=>onOpen(largeImageURL)} />
     </li>
   )
 }

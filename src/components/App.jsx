@@ -33,9 +33,8 @@ export class App extends Component {
     .then(response => response.data.hits)
     .then(data => {
       const dataArray = [];
-      data.map(({ id, webformatURL, largeImageURL }) => {
-        dataArray.push({ id, webformatURL, largeImageURL })
-      })
+      data.map(({ id, webformatURL, largeImageURL }) =>dataArray.push({ id, webformatURL, largeImageURL })
+      )
       if (dataArray.length === 0) {
         toast.info('not found any picture!');
       }
