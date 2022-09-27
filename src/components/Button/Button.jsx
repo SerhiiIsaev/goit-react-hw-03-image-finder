@@ -8,6 +8,8 @@ function Button({ onLoadMoreBTN }) {
   )
 }
 
-Button.propTypes = {}
+Button.propTypes = {
+  onLoadMoreBTN: PropTypes.func.isRequired
+}
 
 export { Button }

@@ -4,6 +4,12 @@ import { Searchbar } from "./Searchbar/Searchbar";
 import axios from "axios";
 import styles from './App.module.css'
 import { Button } from './Button/Button';
+import { Loader } from './Loader/Loader';
+import { Modal } from './Modal/Modal'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 
 export class App extends Component {
@@ -14,6 +20,8 @@ export class App extends Component {
     error: "",
     loading: false,
     page: 1,
+    showModal: false,
+    modalImage: null,
   }
 
 
@@ -28,13 +36,15 @@ export class App extends Component {
       data.map(({ id, webformatURL, largeImageURL }) => {
         dataArray.push({ id, webformatURL, largeImageURL })
       })
-      console.log(dataArray)
+      if (dataArray.length === 0) {
+        toast.info('not found any picture!');
+      }
       return dataArray
     }
     )
     .then( (newCards) => {
         this.setState((prevState) => {
-      if (prevState.cards.length === 0) {
+          if (prevState.cards.length === 0) {
         return {
         cards: newCards,
       }
@@ -53,23 +63,31 @@ export class App extends Component {
       })
     })
       .finally(() => this.setState({
-        loading: false,
-        search : "",
-      }))
+        loading: false,  
+      })
+      )
   }
 
   onFormSubmit = (e) => {
     e.preventDefault()
-    this.setState({
+    const searchValue = e.target.elements.searchInput.value
+    if (searchValue !== "" && searchValue !== this.state.search) {
+      this.setState({
       cards: [],
-      search: e.target.elements.searchInput.value,
+      search: searchValue,
       page: 1,
+      loading: true,
+      
     })
+    } else if (searchValue === "") {
+      toast.info('input is empty!');
+    }
+    
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.search !== prevState.search || this.state.page !== prevState.page) {
-      this.fetchPosts()
+      setTimeout(this.fetchPosts, 200) 
     }
   }
 
@@ -77,17 +95,33 @@ export class App extends Component {
     this.setState((prevState) => {
       return {
         page: prevState.page + 1,
+        loading: true,
       }
     })
   }
   
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({ showModal: !showModal, }));
+  }
   
-  render(){
+  openModal = (largeImageURL) => {
+    this.setState({
+      modalImage: largeImageURL,
+    })
+    this.toggleModal()
+
+  }
+
+  render() {
+    const {showModal,modalImage} = this.state
     return (
       <div className={styles.App}>
         <Searchbar onFormSubmit={this.onFormSubmit} />
-        <ImageGallery cards={this.state.cards} />
-        {this.state.cards.length && <Button onLoadMoreBTN={this.onLoadMoreBTN } />}
+        <ImageGallery cards={this.state.cards} onOpen={this.openModal} />
+        {this.state.loading && <Loader/>}
+        {this.state.cards.length > 1 && <Button onLoadMoreBTN={this.onLoadMoreBTN} />}
+        <ToastContainer autoClose={3000} />
+        {showModal && modalImage && (<Modal onClose={this.toggleModal} modalImage={modalImage} />)}
       </div>
     );
   }

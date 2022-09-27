@@ -16,9 +16,7 @@ class Searchbar extends Component {
         return (
             <header className={styles.SearchbarHeader}>
                 <form className={styles.form} onSubmit={this.props.onFormSubmit}>
-                    <button type="submit" className={styles.formButton}>
-                        <span className={styles.buttonLabel}>Search</span>
-                    </button>
+                    <button type="submit" className={styles.formButton}>&#x1F50D;</button>
 
                     <input 
                         onChange={this.onInputChange}
@@ -36,6 +34,8 @@ class Searchbar extends Component {
     }
 }
 
-Searchbar.propTypes = {}
+Searchbar.propTypes = {
+    onFormSubmit: PropTypes.func.isRequired
+}
 
 export {Searchbar}

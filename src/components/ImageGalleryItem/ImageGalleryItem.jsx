@@ -1,13 +1,18 @@
 import PropTypes from 'prop-types'
 import styles from './ImageGalleryItem.module.css'
-function ImageGalleryItem({ id, webformatURL, largeImageURL }) {
+function ImageGalleryItem({ webformatURL, largeImageURL, onOpen }) {
   return (
     <li className={styles.GalleryItem}>
-      <img className={styles.GalleryItemImage} src={webformatURL} alt={largeImageURL} />
+      <img className={styles.GalleryItemImage} src={webformatURL} alt="picture" onClick={()=>onOpen(largeImageURL)} />
     </li>
   )
 }
 
-ImageGalleryItem.propTypes = {}
+ImageGalleryItem.propTypes = {
+  
+  webformatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  onOpen: PropTypes.func.isRequired
+}
 
 export { ImageGalleryItem }

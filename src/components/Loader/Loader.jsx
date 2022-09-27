@@ -1,13 +1,21 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
+import { Circles } from  'react-loader-spinner'
 import styles from './Loader.module.css'
 
-function Loader(props) {
+function Loader() {
   return (
-    <button className={styles.LoaderButton}>Load more</button>
-  )
-}
+    <Circles
+        height="80"
+        width="80"
+        color="#3f51b5"
+        ariaLabel="circles-loading"
+        wrapperStyle={{}}
+        wrapperClass={styles.circles}
+        visible={true}
+      />
+  )  
+}  
 
-Loader.propTypes = {}
+
 
 export { Loader }
