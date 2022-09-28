@@ -22,6 +22,7 @@ export class App extends Component {
     page: 1,
     showModal: false,
     modalImage: null,
+    total: 0,
   }
 
 
@@ -30,7 +31,13 @@ export class App extends Component {
     const request = this.state.search
     const page = this.state.page
     axios.get(`https://pixabay.com/api/?q=${request}&page=${page}&key=29243564-6faefde78431833ffd5a53afd&image_type=photo&orientation=horizontal&per_page=12`)
-    .then(response => response.data.hits)
+      .then(response => {
+        this.setState({
+          total: response.data.total,
+        })
+        console.log(response.data.total)
+        return response.data.hits
+      })
     .then(data => {
       const dataArray = [];
       data.map(({ id, webformatURL, largeImageURL }) =>dataArray.push({ id, webformatURL, largeImageURL })
@@ -112,13 +119,13 @@ export class App extends Component {
   }
 
   render() {
-    const {showModal,modalImage} = this.state
+    const {showModal,modalImage, total} = this.state
     return (
       <div className={styles.App}>
         <Searchbar onFormSubmit={this.onFormSubmit} />
         <ImageGallery cards={this.state.cards} onOpen={this.openModal} />
         {this.state.loading && <Loader/>}
-        {this.state.cards.length > 1 && <Button onLoadMoreBTN={this.onLoadMoreBTN} />}
+        {this.state.cards.length > 1 && this.state.cards.length < total && <Button onLoadMoreBTN={this.onLoadMoreBTN} />}
         <ToastContainer autoClose={3000} />
         {showModal && modalImage && (<Modal onClose={this.toggleModal} modalImage={modalImage} />)}
       </div>
